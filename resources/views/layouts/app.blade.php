@@ -41,17 +41,17 @@
                             </li>
                         @endif
                         <li class="nav-item">
-                            <form action="/logout" method="POST" class="d-inline">
+                            <form action="{{ 'logout' }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn nav-link text-white">Logout</button>
                             </form>
                         </li>
                     @else
                         <li class="nav-item">
-                            <a class="nav-link" href="/login">Login</a>
+                            <a class="nav-link" href="{{ 'login' }}">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/register">Register</a>
+                            <a class="nav-link" href="{{ 'register' }}">Register</a>
                         </li>
                     @endauth
                 </ul>
