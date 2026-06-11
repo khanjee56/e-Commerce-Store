@@ -26,10 +26,9 @@
             <div class="col-md-3 mb-4">
                 <div class="card h-100">
                     @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}"
+                       <img src="{{ asset($product->image) }}"
                              class="card-img-top"
-                             style="height: 200px; object-fit: cover;"
-                             alt="{{ $product->name }}">
+                           style="height: 200px; object-fit: cover;">
                     @else
                         <img src="https://via.placeholder.com/300x200"
                              class="card-img-top"
