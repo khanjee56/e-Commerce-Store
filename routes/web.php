@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function() {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function() {
     Route::get('/dashboard', [AdminController::class, 'dashboard']);
+    Route::post('/logout', [AdminController::class, 'logout']);
 
     Route::get('/products', [AdminController::class, 'products']);
     Route::get('/products/create', [AdminController::class, 'createProduct']);
@@ -50,4 +51,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function() {
     Route::get('/products/{id}/edit', [AdminController::class, 'editProduct']);
     Route::put('/products/{id}', [AdminController::class, 'updateProduct']);
     Route::delete('/products/{id}', [AdminController::class, 'destroyProduct']);
+    Route::get('/categories', [AdminController::class, 'categories']);
+Route::get('/categories/create', [AdminController::class, 'createCategory']);
+Route::post('/categories', [AdminController::class, 'storeCategory']);
+Route::get('/categories/{id}/edit', [AdminController::class, 'editCategory']);
+Route::put('/categories/{id}', [AdminController::class, 'updateCategory']);
+Route::delete('/categories/{id}', [AdminController::class, 'destroyCategory']);
+Route::get('/orders', [AdminController::class, 'orders']);
+Route::put('/orders/{id}', [AdminController::class, 'updateOrderStatus']);
+Route::get('/allusers', [AdminCOntroller::class, 'show']);
+Route::get('/delete/{id}', [AdminController::class, 'delete']);
 });

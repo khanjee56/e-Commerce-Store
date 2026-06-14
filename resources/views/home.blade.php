@@ -25,16 +25,15 @@
         @forelse($products as $product)
             <div class="col-md-3 mb-4">
                 <div class="card h-100">
-                    @if($product->image)
-                       <img src="{{ asset($product->image) }}"
-                             class="card-img-top"
-                           style="height: 200px; object-fit: cover;">
-                    @else
-                        <img src="https://via.placeholder.com/300x200"
-                             class="card-img-top"
-                             style="height: 200px; object-fit: cover;"
-                             alt="No Image">
-                    @endif
+                                  @if($product->image)
+    @if(str_starts_with($product->image, 'images/'))
+        <img src="{{ asset($product->image) }}" width="200" style="object-fit: cover; height: 200px;">
+    @else
+        <img src="{{ asset('storage/' . $product->image) }}" width="200" style="object-fit: cover; height: 200px;">
+    @endif
+@else
+    <img src="https://via.placeholder.com/60" width="60">
+@endif
                     <div class="card-body">
                         <h5 class="card-title">{{ $product->name }}</h5>
                         <p class="text-muted">{{ $product->category->name }}</p>
