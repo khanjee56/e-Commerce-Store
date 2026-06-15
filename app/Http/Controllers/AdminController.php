@@ -199,6 +199,6 @@ public function show(){
 public function delete($id){
      $user = User::findorFail($id);
      $user->delete();
-     return redirect('/admin/allusers')->with('sucess','user deleted sucessfully');
+     return redirect('/admin/allusers')->with('success','user deleted sucessfully');
 }
 }

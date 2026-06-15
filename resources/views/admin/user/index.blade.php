@@ -5,9 +5,9 @@
     <h2> Manage Users</h2>
     
 </div>
-@if(session('success'))
+<!-- @if(session('success'))
     {{ session('success') }}
-@endif
+@endif -->
 
 <div class="table-responsive">
     <table  class="table table-bordered align-middle">

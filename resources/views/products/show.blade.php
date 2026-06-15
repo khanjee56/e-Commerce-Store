@@ -5,15 +5,15 @@
 <div class="row">
     <!-- Product Image -->
     <div class="col-md-5">
-        @if($product->image)
-            <img src="{{ asset('storage/' . $product->image) }}"
-                 class="img-fluid rounded"
-                 alt="{{ $product->name }}">
-        @else
-            <img src="https://via.placeholder.com/500x400"
-                 class="img-fluid rounded"
-                 alt="No Image">
-        @endif
+                         @if($product->image)
+    @if(str_starts_with($product->image, 'images/'))
+        <img src="{{ asset($product->image) }}" width="360" style="object-fit: cover; height: 360px;">
+    @else
+        <img src="{{ asset('storage/' . $product->image) }}" width="360" style="object-fit: cover; height: 360px;">
+    @endif
+@else
+    <img src="https://via.placeholder.com/60" width="60">
+@endif
     </div>
 
     <!-- Product Info -->
