@@ -56,5 +56,64 @@ public function logout(REQUEST $request){
     Auth::logout();
     return redirect('/login');
 }
+// Show Face Login Page
+public function faceLogin()
+{
+    return view('auth.face-login');
+}
+
+// Verify Face Login
+public function faceLoginVerify(Request $request)
+{
+    // Get all admin users who have face data
+    $admins = \App\Models\User::where('role', 'admin')
+                              ->whereNotNull('face_descriptor')
+                              ->get();
+
+    if($admins->isEmpty()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No admin face data found!'
+        ]);
+    }
+
+    // Get incoming face descriptor
+    $incomingDescriptor = $request->face_descriptor;
+
+    foreach($admins as $admin) {
+        // Get saved face descriptor
+        $savedDescriptor = json_decode($admin->face_descriptor, true);
+
+        // Calculate distance between two faces
+        $distance = $this->euclideanDistance($incomingDescriptor, $savedDescriptor);
+
+        // If distance is less than 0.6 → faces match!
+        if($distance < 0.6) {
+            // Log the admin in
+            Auth::login($admin);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Face matched! Logging in...'
+            ]);
+        }
+    }
+
+    return response()->json([
+        'success' => false,
+        'message' => 'Face not recognized!'
+    ]);
+}
+
+// Calculate distance between two face descriptors
+// Calculate distance between two face descriptors
+private function euclideanDistance($descriptor1, $descriptor2)
+{
+    $sum = 0;
+    for($i = 0; $i < count($descriptor1); $i++) {
+        $sum += pow($descriptor1[$i] - $descriptor2[$i], 2);
+    }
+    return sqrt($sum);
+}
 }
 

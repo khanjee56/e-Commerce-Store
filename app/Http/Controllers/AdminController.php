@@ -201,4 +201,23 @@ public function delete($id){
      $user->delete();
      return redirect('/admin/allusers')->with('success','user deleted sucessfully');
 }
+// Show Face Setup Page
+public function faceSetup()
+{
+    return view('admin.face-setup');
+}
+
+// Save Face Descriptor
+public function saveFace(Request $request)
+{
+    $user = auth()->user();
+
+    $user->face_descriptor = json_encode($request->face_descriptor);
+    $user->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Face saved successfully!'
+    ]);
+}
 }

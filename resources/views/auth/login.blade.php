@@ -69,5 +69,11 @@
             </div>
         </div>
     </div>
+    <div class="text-center mt-3">
+    <a href="/face-login" class="btn btn-dark w-100">
+        📷 Login with Face Recognition
+    </a>
 </div>
+</div>
+
 @endsection

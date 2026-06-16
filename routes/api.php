@@ -1,18 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductApiController;
+use App\Http\Controllers\Api\AuthApiController;
 
-// Public Routes
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-
+// Public Routes (no token required)
+Route::post('/register', [AuthApiController::class, 'register']);
+Route::post('/login', [AuthApiController::class, 'login']);
 Route::get('/products', [ProductApiController::class, 'index']);
 Route::get('/products/{id}', [ProductApiController::class, 'show']);
 Route::get('/categories', [ProductApiController::class, 'categories']);
 
-// Protected Routes
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
+// Protected Routes (token required)
+Route::middleware('auth:sanctum')->group(function() {
+    Route::post('/logout', [AuthApiController::class, 'logout']);
+    Route::get('/user', [AuthApiController::class, 'user']);
 });

@@ -61,4 +61,13 @@ Route::get('/orders', [AdminController::class, 'orders']);
 Route::put('/orders/{id}', [AdminController::class, 'updateOrderStatus']);
 Route::get('/allusers', [AdminCOntroller::class, 'show']);
 Route::get('/delete/{id}', [AdminController::class, 'delete']);
+// Face Login Routes
+
+ Route::get('/face-setup', [AdminController::class, 'faceSetup']);
+    Route::post('/save-face', [AdminController::class, 'saveFace']);
+
+
+
 });
+Route::get('/face-login', [HomeController::class, 'faceLogin'])->name('face.login');
+Route::post('/face-login-verify', [HomeController::class, 'faceLoginVerify']);

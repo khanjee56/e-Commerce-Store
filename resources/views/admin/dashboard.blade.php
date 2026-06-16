@@ -73,6 +73,13 @@
             📋 Manage Users
         </a>
     </div>
+    <div class="row mt-3">
+    <div class="col-md-4">
+        <a href="/admin/face-setup" class="btn btn-dark w-100 py-3">
+            📷 Setup Face Recognition
+        </a>
+    </div>
+</div>
 </div>
 
 @endsection
