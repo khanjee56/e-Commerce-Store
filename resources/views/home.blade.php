@@ -9,7 +9,22 @@
         <h1>🛒 Welcome to MyStore</h1>
         <p class="lead">Find the best products at the best prices!</p>
     </div>
-
+    <!-- Search Bar -->
+<div class="mb-4">
+    <form action="/" method="GET">
+        <div class="input-group">
+            <input type="text"
+                   name="search"
+                   class="form-control form-control-lg"
+                   placeholder="🔍 Search products..."
+                   value="{{ request('search') }}">
+            <button type="submit" class="btn btn-dark">Search</button>
+            @if(request('search'))
+                <a href="/" class="btn btn-outline-dark">Clear</a>
+            @endif
+        </div>
+    </form>
+</div>
     <!-- Categories Filter -->
     <div class="mb-4">
         <a href="/" class="btn btn-dark me-2">All</a>

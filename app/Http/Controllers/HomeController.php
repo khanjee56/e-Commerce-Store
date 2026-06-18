@@ -7,19 +7,25 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
-    public function index(Request $request)
-    {
-        $categories = Category::all();
+   public function index(Request $request)
+{
+    $categories = Category::all();
 
-        $products = Product::when($request->category, function($query) use ($request) {
+    $products = Product::with('category')
+        ->when($request->category, function($query) use ($request) {
             return $query->where('category_id', $request->category);
-        })->get();
+        })
+        ->when($request->search, function($query) use ($request) {
+            return $query->where('name', 'LIKE', '%' . $request->search . '%');
+        })
+        ->get();
 
-        return view('home', compact('products', 'categories'));
-    }
+    return view('home', compact('products', 'categories'));
+}
     public function register(){
         return view('auth.register');
     }
@@ -114,6 +120,51 @@ private function euclideanDistance($descriptor1, $descriptor2)
         $sum += pow($descriptor1[$i] - $descriptor2[$i], 2);
     }
     return sqrt($sum);
+}
+// Show Profile Page
+public function profile()
+{
+    return view('profile');
+}
+
+// Update Profile
+public function updateProfile(Request $request)
+{
+    $user = auth()->user();
+
+    $request->validate([
+        'name'  => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $user->id,
+    ]);
+
+    $user->update([
+        'name'  => $request->name,
+        'email' => $request->email,
+    ]);
+
+    return redirect('/profile')->with('success', 'Profile updated successfully!');
+}
+
+// Update Password
+public function updatePassword(Request $request)
+{
+    $request->validate([
+        'current_password' => 'required',
+        'password'         => 'required|min:6|confirmed',
+    ]);
+
+    $user = auth()->user();
+
+    // Check if current password is correct
+    if(!Hash::check($request->current_password, $user->password)) {
+        return back()->with('error', 'Current password is incorrect!');
+    }
+
+    $user->update([
+        'password' => Hash::make($request->password),
+    ]);
+
+    return redirect('/profile')->with('success', 'Password updated successfully!');
 }
 }
 

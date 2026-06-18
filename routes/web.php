@@ -38,6 +38,9 @@ Route::middleware('auth')->group(function() {
     Route::get('/orders/place', [OrderController::class, 'placeOrderPage']);
     Route::post('/orders/place', [OrderController::class, 'placeOrder']);
     Route::get('/orders', [OrderController::class, 'myOrders']);
+    Route::get('/profile', [HomeController::class, 'profile']);
+Route::put('/profile', [HomeController::class, 'updateProfile']);
+Route::put('/profile/password', [HomeController::class, 'updatePassword']);
 });
 
 

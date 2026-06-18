@@ -28,9 +28,15 @@
                     </li>
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="/cart">
-                                <i class="fas fa-shopping-cart"></i> Cart
-                            </a>
+                          <a class="nav-link" href="/cart">
+    <i class="fas fa-shopping-cart"></i> Cart
+    @php
+        $cartCount = count(session()->get('cart', []));
+    @endphp
+    @if($cartCount > 0)
+        <span class="badge bg-danger rounded-pill">{{ $cartCount }}</span>
+    @endif
+</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/orders">My Orders</a>
@@ -40,6 +46,13 @@
                                 <a class="nav-link text-warning" href="/admin/dashboard">Admin Panel</a>
                             </li>
                         @endif
+                        @auth
+    <li class="nav-item">
+        <a class="nav-link" href="/profile">
+            👤 {{ auth()->user()->name }}
+        </a>
+    </li>
+@endauth
                         <li class="nav-item">
                             <form action="{{ 'logout' }}" method="POST" class="d-inline">
                                 @csrf
@@ -53,6 +66,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ 'register' }}">Register</a>
                         </li>
+                        
                     @endauth
                 </ul>
             </div>
