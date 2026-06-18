@@ -1,12 +1,12 @@
 # 🛒 E-Commerce Store — Laravel Project
 
-A full-featured e-commerce web application built with **Laravel 12**, featuring a complete shopping experience, admin panel, and REST APIs.
+A full-featured e-commerce web application built with **Laravel 12**, featuring a complete shopping experience, admin panel, REST APIs, and **Face Recognition Login**!
 
 ---
 
 ## 📸 Project Overview
 
-This project is a complete e-commerce store where users can browse products, add to cart, place orders, and track their order history. Admins can manage products, categories, orders, and users through a dedicated admin panel.
+This project is a complete e-commerce store where users can browse products, search, add to cart, place orders, and track their order history. Admins can manage products, categories, orders, and users through a dedicated admin panel. The project also includes REST APIs with token authentication and a unique **Face Recognition login system** for admins.
 
 ---
 
@@ -15,9 +15,12 @@ This project is a complete e-commerce store where users can browse products, add
 ### 👤 User Side
 - User Registration & Login
 - Forgot Password (Gmail SMTP email)
+- User Profile Page (update name, email, password)
 - Browse Products with Category Filter
+- 🔍 Search Products by Name
 - Product Detail Page
 - Add to Cart / Remove from Cart
+- Cart Item Count in Navbar
 - Place Orders
 - View Order History with Status
 
@@ -27,6 +30,7 @@ This project is a complete e-commerce store where users can browse products, add
 - Manage Categories (Add / Edit / Delete)
 - Manage Orders (View all + Update Status)
 - View All Users
+- 📷 Face Recognition Setup & Login
 
 ### 🔌 REST APIs
 - `GET /api/products` — Get all products
@@ -36,6 +40,13 @@ This project is a complete e-commerce store where users can browse products, add
 - `POST /api/login` — Login user (returns token)
 - `GET /api/user` — Get logged in user info (protected)
 - `POST /api/logout` — Logout user (protected)
+
+### 📷 Face Recognition
+- Admin can register their face (one time setup)
+- Login using face scan instead of password
+- Uses face-api.js for real time face detection
+- Euclidean distance algorithm for face matching
+- Face data stored securely in database
 
 ---
 
@@ -48,7 +59,9 @@ This project is a complete e-commerce store where users can browse products, add
 | MySQL | Database |
 | Bootstrap 5 | Frontend Styling |
 | Laravel Sanctum | API Authentication |
+| face-api.js | Face Recognition |
 | XAMPP | Local Development Server |
+| Postman | API Testing |
 
 ---
 
@@ -56,11 +69,12 @@ This project is a complete e-commerce store where users can browse products, add
 
 | Table | Description |
 |---|---|
-| `users` | Registered users (role: user/admin) |
+| `users` | Registered users (role: user/admin, face_descriptor) |
 | `categories` | Product categories |
 | `products` | Products with image, price, stock |
 | `orders` | User orders with status |
 | `order_items` | Individual items inside each order |
+| `personal_access_tokens` | API tokens (Sanctum) |
 
 ---
 
@@ -102,17 +116,29 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-### **Step 5: Run Migrations & Seed Data**
+### **Step 5: Configure Gmail (Forgot Password)**
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=youremail@gmail.com
+MAIL_PASSWORD=your_app_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=youremail@gmail.com
+MAIL_FROM_NAME="MyStore"
+```
+
+### **Step 6: Run Migrations & Seed Data**
 ```bash
 php artisan migrate:fresh --seed
 ```
 
-### **Step 6: Create Storage Link**
+### **Step 7: Create Storage Link**
 ```bash
 php artisan storage:link
 ```
 
-### **Step 7: Run the Project**
+### **Step 8: Run the Project**
 ```bash
 php artisan serve
 ```
@@ -133,11 +159,24 @@ Then login and access admin panel at `/admin/dashboard`
 
 ---
 
+## 📷 Face Recognition Setup
+
+1. Login as admin
+2. Go to Admin Dashboard
+3. Click **"📷 Setup Face Recognition"**
+4. Allow camera access
+5. Position face clearly in camera
+6. Click **"📸 Save My Face"**
+7. Done! Now login at `/face-login` using your face!
+
+---
+
 ## 🔌 API Testing with Postman
 
 ### **Register**
 ```
 POST http://localhost:8000/api/register
+Headers: Accept: application/json
 Body (JSON):
 {
     "name": "Test User",
@@ -150,6 +189,7 @@ Body (JSON):
 ### **Login**
 ```
 POST http://localhost:8000/api/login
+Headers: Accept: application/json
 Body (JSON):
 {
     "email": "test@gmail.com",
@@ -199,9 +239,22 @@ routes/
 resources/views/
 ├── layouts/
 ├── admin/
+│   ├── dashboard.blade.php
+│   ├── face-setup.blade.php
+│   ├── products/
+│   ├── categories/
+│   ├── orders/
+│   └── users/
+├── auth/
+│   ├── login.blade.php
+│   ├── register.blade.php
+│   └── face-login.blade.php
 ├── products/
 ├── cart/
-└── orders/
+├── orders/
+└── profile.blade.php
+public/
+└── models/ (face-api.js models)
 ```
 
 ---
